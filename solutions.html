@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions | PayFlow - Modern Payment Infrastructure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --secondary: #0F172A;
+            --accent: #06B6D4;
+            --success: #10B981;
+            --light: #F8FAFC;
+            --gray: #64748B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #fff;
+            color: var(--secondary);
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -20px); }
+            100% { transform: translate(0, 0px); }
+        }
+        
+        .pulse {
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+        
+        .slide-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        
+        .slide-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, #fff 0%, #f8faff 100%);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+            z-index: 50;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .mobile-menu-header {
+            flex-shrink: 0;
+            padding: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .mobile-menu-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .nav-link {
+            position: relative;
+            padding: 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        /* Custom breakpoint for 1100px */
+        @media (max-width: 1100px) {
+            .desktop-nav {
+                display: none !important;
+            }
+            
+            .mobile-nav-button {
+                display: flex !important;
+            }
+        }
+        
+        @media (min-width: 1101px) {
+            .mobile-nav-button {
+                display: none !important;
+            }
+        }
+        
+        /* Modern scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+        }
+        
+        /* Glow effects */
+        .glow {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        
+        /* Animated background */
+        .animated-bg {
+            background: linear-gradient(-45deg, #f8faff, #f0f4ff, #e6f0ff, #f0f4ff);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Modern button styles */
+        .btn-modern {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        .btn-modern:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-modern:hover:before {
+            left: 100%;
+        }
+        
+        /* Modern section dividers */
+        .divider {
+            height: 3px;
+            width: 80px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            margin: 20px auto;
+            border-radius: 3px;
+        }
+        
+        /* NEW: Supine Animation Styles */
+        .supine-float {
+            animation: supine-float 8s ease-in-out infinite;
+        }
+        
+        @keyframes supine-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(2deg); }
+            66% { transform: translateY(5px) rotate(-1deg); }
+        }
+        
+        .supine-glow {
+            animation: supine-glow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes supine-glow {
+            0% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+            100% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+        }
+        
+        .supine-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--accent), var(--primary));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: supine-text 5s ease infinite;
+        }
+        
+        @keyframes supine-text {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .supine-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .supine-shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: supine-shimmer 3s infinite;
+        }
+        
+        @keyframes supine-shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+        
+        .supine-bg {
+            background: linear-gradient(-45deg, #f8faff, #f0f4ff, #e6f0ff, #f0f4ff, #e6f7ff);
+            background-size: 400% 400%;
+            animation: supine-bg 15s ease infinite;
+        }
+        
+        @keyframes supine-bg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .supine-appear {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: supine-appear 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+        }
+        
+        @keyframes supine-appear {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .supine-stagger > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: supine-stagger 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+        }
+        
+        @keyframes supine-stagger {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .supine-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+        .supine-stagger > *:nth-child(2) { animation-delay: 0.2s; }
+        .supine-stagger > *:nth-child(3) { animation-delay: 0.3s; }
+        .supine-stagger > *:nth-child(4) { animation-delay: 0.4s; }
+        .supine-stagger > *:nth-child(5) { animation-delay: 0.5s; }
+        .supine-stagger > *:nth-child(6) { animation-delay: 0.6s; }
+        
+        .supine-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .supine-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .supine-typing {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+        
+        .supine-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .supine-particle {
+            position: absolute;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: supine-particle-float 20s infinite linear;
+        }
+        
+        @keyframes supine-particle-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Solution-specific styles */
+        .solution-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .industry-badge {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .case-study-card {
+            background: linear-gradient(135deg, #fff 0%, #f8faff 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .case-study-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="supine-bg">
+    <!-- Particles Background -->
+    <div class="supine-particles" id="particles-container"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="text-2xl font-black text-gray-900 flex items-center supine-appear" style="animation-delay: 0.1s">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 mr-3 flex items-center justify-center text-white supine-float">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span class="gradient-text">PayFlow</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="desktop-nav flex items-center space-x-10 supine-stagger">
+                    <a href="products.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Products</a>
+                    <a href="solutions.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors border-b-2 border-purple-500 pb-1">Solutions</a>
+                    <a href="developers.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Developers</a>
+                    <a href="pricing.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Pricing</a>
+                    <a href="resources.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Resources</a>
+                </div>
+
+                <!-- Desktop CTA Buttons -->
+                <div class="desktop-nav flex items-center space-x-6 supine-stagger">
+                    <a href="support.html" class="text-gray-700 hover:text-gray-900 font-semibold">Support</a>
+                    <a href="login.html" class="text-gray-700 hover:text-gray-900 font-semibold">Sign in</a>
+                    <a href="signup.html" class="btn-modern text-white px-6 py-3 rounded-xl font-semibold supine-glow">
+                        Get started
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="mobile-nav-button flex items-center">
+                    <a href="login.html" class="text-gray-700 hover:text-gray-900 mr-6 font-semibold">Sign in</a>
+                    <button type="button" id="mobile-menu-button" class="text-gray-700 hover:text-gray-900">
+                        <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu">
+            <div class="mobile-menu-header">
+                <div class="flex items-center justify-between">
+                    <a href="index.html" class="text-xl font-black text-gray-900 flex items-center">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-cyan-500 mr-3 flex items-center justify-center text-white supine-float">
+                            <i class="fas fa-bolt text-sm"></i>
+                        </div>
+                        <span class="gradient-text">PayFlow</span>
+                    </a>
+                    <button id="close-mobile-menu" class="text-gray-500 hover:text-gray-700">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mobile-menu-content space-y-2 supine-stagger">
+                <a href="products.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Products</a>
+                <a href="solutions.html" class="block text-lg font-semibold text-gray-900 py-3 bg-purple-50 rounded-lg px-4 transition-colors border-l-4 border-purple-500">Solutions</a>
+                <a href="developers.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Developers</a>
+                <a href="pricing.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Pricing</a>
+                <a href="resources.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Resources</a>
+                <a href="support.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Support</a>
+                
+                <div class="pt-6 border-t border-gray-100 mt-6">
+                    <a href="signup.html" class="block w-full btn-modern text-white text-center py-4 rounded-xl font-semibold supine-glow">
+                        Get started
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 overflow-hidden relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-cyan-50 z-0"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-white shadow-sm mb-8 supine-appear" style="animation-delay: 0.2s">
+                    <span class="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 mr-2 supine-glow"></span>
+                    <span class="text-sm font-semibold text-gray-700">Tailored Solutions for Your Business</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight supine-appear" style="animation-delay: 0.3s">
+                    Payment solutions for <span class="supine-text text-glow">every industry</span>
+                </h1>
+                <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.4s">
+                    Discover how PayFlow's flexible payment infrastructure can help your business grow, no matter your industry or size.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-5 mb-12 supine-appear" style="animation-delay: 0.5s">
+                    <a href="signup.html" class="btn-modern text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center supine-shimmer supine-glow">
+                        Get started <i class="fas fa-arrow-right ml-3"></i>
+                    </a>
+                    <a href="contact.html" class="glass-card border border-gray-200 text-gray-700 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg transition-all flex items-center justify-center supine-hover">
+                        Talk to an expert
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Overview -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 slide-in">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-5 supine-appear">
+                    Industry-Specific Solutions
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                    We've tailored our payment solutions to meet the unique needs of your industry.
+                </p>
+                <div class="divider supine-appear" style="animation-delay: 0.2s"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Solution 1 -->
+                <div class="solution-card glass-card p-8 border border-white/50 supine-appear" style="animation-delay: 0.3s">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="feature-icon supine-float">
+                            <i class="fas fa-shopping-cart text-2xl"></i>
+                        </div>
+                        <span class="industry-badge">E-commerce</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Online Retail</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Optimize checkout conversion, reduce cart abandonment, and accept payments from customers worldwide.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Optimized checkout flows</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Global payment methods</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Fraud prevention</li>
+                    </ul>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Solution 2 -->
+                <div class="solution-card glass-card p-8 border border-white/50 supine-appear" style="animation-delay: 0.4s">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="feature-icon supine-float" style="animation-delay: 0.2s">
+                            <i class="fas fa-desktop text-2xl"></i>
+                        </div>
+                        <span class="industry-badge">SaaS</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Software & Services</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Manage subscriptions, usage-based billing, and global expansion with our flexible billing platform.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Flexible billing models</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Automated invoicing</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Multi-currency support</li>
+                    </ul>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Solution 3 -->
+                <div class="solution-card glass-card p-8 border border-white/50 supine-appear" style="animation-delay: 0.5s">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="feature-icon supine-float" style="animation-delay: 0.4s">
+                            <i class="fas fa-store text-2xl"></i>
+                        </div>
+                        <span class="industry-badge">Marketplaces</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Platforms & Marketplaces</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Build and scale your platform with split payments, seller onboarding, and compliance tools.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Split payments</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Custom onboarding</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Compliance tools</li>
+                    </ul>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Solution 4 -->
+                <div class="solution-card glass-card p-8 border border-white/50 supine-appear" style="animation-delay: 0.6s">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="feature-icon supine-float" style="animation-delay: 0.6s">
+                            <i class="fas fa-graduation-cap text-2xl"></i>
+                        </div>
+                        <span class="industry-badge">Education</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Education & E-learning</h3>
+                    <p class="text-gray-900 mb-6 leading-relaxed">Accept tuition payments, manage course subscriptions, and offer flexible payment plans for students.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Payment plans</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Subscription management</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> International payments</li>
+                    </ul>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Solution 5 -->
+                <div class="solution-card glass-card p-8 border border-white/50 supine-appear" style="animation-delay: 0.7s">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="feature-icon supine-float" style="animation-delay: 0.8s">
+                            <i class="fas fa-heartbeat text-2xl"></i>
+                        </div>
+                        <span class="industry-badge">Healthcare</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Healthcare</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Streamline patient billing, insurance payments, and subscription services for healthcare providers.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> HIPAA compliance</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Flexible billing options</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Recurring payments</li>
+                    </ul>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Solution 6 -->
+                <div class="solution-card glass-card p-8 border border-white/50 supine-appear" style="animation-delay: 0.8s">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="feature-icon supine-float" style="animation-delay: 1s">
+                            <i class="fas fa-plane text-2xl"></i>
+                        </div>
+                        <span class="industry-badge">Travel</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Travel & Hospitality</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Accept bookings, manage deposits, and handle complex payment scenarios for travel businesses.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Multi-currency pricing</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Deposit management</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Refund automation</li>
+                    </ul>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Size Solutions -->
+    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 slide-in">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-5 supine-appear">
+                    Solutions for Every Business Size
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                    From startups to enterprises, we have the right solution for your business needs.
+                </p>
+                <div class="divider supine-appear" style="animation-delay: 0.2s"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-8 glass-card rounded-3xl border border-white/50 supine-appear" style="animation-delay: 0.3s">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white text-2xl mx-auto mb-6 supine-float">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Startups</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Get up and running quickly with our developer-friendly APIs and flexible pricing that scales with your business.</p>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> No setup fees</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Developer-first tools</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Pay-as-you-go pricing</li>
+                    </ul>
+                    <a href="pricing.html" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center justify-center group">
+                        View pricing <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <div class="text-center p-8 glass-card rounded-3xl border border-white/50 supine-appear" style="animation-delay: 0.4s">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white text-2xl mx-auto mb-6 supine-float" style="animation-delay: 0.2s">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Growing Businesses</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Scale your payment operations with advanced features like smart routing, fraud prevention, and subscription management.</p>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Advanced fraud protection</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Smart payment routing</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Subscription management</li>
+                    </ul>
+                    <a href="products.html" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center justify-center group">
+                        Explore products <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <div class="text-center p-8 glass-card rounded-3xl border border-white/50 supine-appear" style="animation-delay: 0.5s">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white text-2xl mx-auto mb-6 supine-float" style="animation-delay: 0.4s">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Enterprises</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Custom solutions with dedicated support, advanced security, and global payment capabilities for large organizations.</p>
+                    <ul class="space-y-3 mb-8 text-left">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Dedicated account management</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Custom integrations</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-3"></i> Global expansion support</li>
+                    </ul>
+                    <a href="contact.html" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center justify-center group">
+                        Contact sales <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 slide-in">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-5 supine-appear">
+                    Success Stories
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                    See how businesses are growing with PayFlow.
+                </p>
+                <div class="divider supine-appear" style="animation-delay: 0.2s"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="case-study-card p-6 supine-appear" style="animation-delay: 0.3s">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white mr-4 supine-float">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">StyleCart</h4>
+                            <p class="text-gray-500 text-sm">Fashion E-commerce</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">"PayFlow helped us reduce cart abandonment by 23% and expand to 15 new countries with local payment methods."</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">Increased conversion by 18%</div>
+                        <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold text-sm">
+                            Read case study
+                        </a>
+                    </div>
+                </div>
+
+                <div class="case-study-card p-6 supine-appear" style="animation-delay: 0.4s">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white mr-4 supine-float" style="animation-delay: 0.2s">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">DevStack</h4>
+                            <p class="text-gray-500 text-sm">SaaS Platform</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">"With PayFlow's subscription management, we've automated our billing and reduced failed payments by 35%."</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">Reduced failed payments by 35%</div>
+                        <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold text-sm">
+                            Read case study
+                        </a>
+                    </div>
+                </div>
+
+                <div class="case-study-card p-6 supine-appear" style="animation-delay: 0.5s">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white mr-4 supine-float" style="animation-delay: 0.4s">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">HomeShare</h4>
+                            <p class="text-gray-500 text-sm">Marketplace</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">"PayFlow Connect enabled us to onboard thousands of hosts and automate split payments across our platform."</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">Scaled to 50K+ users</div>
+                        <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold text-sm">
+                            Read case study
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12 supine-appear" style="animation-delay: 0.6s">
+                <a href="resources.html" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold text-lg flex items-center justify-center group">
+                    View all case studies <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 slide-in">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-5 supine-appear">
+                    Ready to Get Started?
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                    Choose the integration method that works best for your business.
+                </p>
+                <div class="divider supine-appear" style="animation-delay: 0.2s"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-8 glass-card rounded-3xl border border-white/50 supine-appear" style="animation-delay: 0.3s">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white text-2xl mx-auto mb-6 supine-float">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Custom Integration</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Build a fully custom payment experience with our powerful APIs and SDKs.</p>
+                    <a href="developers.html" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center justify-center group">
+                        Developer docs <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <div class="text-center p-8 glass-card rounded-3xl border border-white/50 supine-appear" style="animation-delay: 0.4s">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white text-2xl mx-auto mb-6 supine-float" style="animation-delay: 0.2s">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Pre-built Solutions</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Use our pre-built payment forms and checkout flows for quick implementation.</p>
+                    <a href="products.html" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center justify-center group">
+                        Explore products <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <div class="text-center p-8 glass-card rounded-3xl border border-white/50 supine-appear" style="animation-delay: 0.5s">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-white text-2xl mx-auto mb-6 supine-float" style="animation-delay: 0.4s">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Partner Implementation</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Work with our team or certified partners for a fully managed implementation.</p>
+                    <a href="contact.html" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center justify-center group">
+                        Contact us <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 gradient-bg text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-black mb-6 supine-appear">Find Your Perfect Solution</h2>
+            <p class="text-xl text-purple-100 mb-10 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                Let our experts help you choose the right PayFlow products for your business needs.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-5 supine-appear" style="animation-delay: 0.2s">
+                <a href="signup.html" class="bg-white text-gray-900 px-10 py-5 rounded-xl font-black text-lg hover:shadow-2xl transition-all pulse flex items-center justify-center supine-shimmer">
+                    Start free trial <i class="fas fa-arrow-right ml-3"></i>
+                </a>
+                <a href="contact.html" class="glass-card border border-white/30 text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-white/10 transition-colors flex items-center justify-center supine-hover">
+                    Schedule a demo
+                </a>
+            </div>
+            <p class="mt-10 text-purple-200 font-medium supine-appear" style="animation-delay: 0.3s">Free trial • No credit card required • Setup in minutes</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-10 supine-stagger">
+                <div class="col-span-2">
+                    <h3 class="text-white text-xl font-black mb-6 flex items-center">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-cyan-500 mr-3 flex items-center justify-center text-white supine-float">
+                            <i class="fas fa-bolt text-sm"></i>
+                        </div>
+                        PayFlow
+                    </h3>
+                    <p class="text-gray-400 mb-6 max-w-xs leading-relaxed">Modern payment processing for businesses of all sizes.</p>
+                    <div class="flex space-x-5">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl supine-hover"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl supine-hover"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl supine-hover"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-5 text-lg">Products</h4>
+                    <ul class="space-y-3">
+                        <li><a href="payments.html" class="hover:text-white transition-colors">Payments</a></li>
+                        <li><a href="billing.html" class="hover:text-white transition-colors">Billing</a></li>
+                        <li><a href="connect.html" class="hover:text-white transition-colors">Connect</a></li>
+                        <li><a href="radar.html" class="hover:text-white transition-colors">Radar</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-5 text-lg">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="careers.html" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-5 text-lg">Developers</h4>
+                    <ul class="space-y-3">
+                        <li><a href="documentation.html" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="api.html" class="hover:text-white transition-colors">API Reference</a></li>
+                        <li><a href="guides.html" class="hover:text-white transition-colors">Guides</a></li>
+                        <li><a href="status.html" class="hover:text-white transition-colors">Status</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-5 text-lg">Support</h4>
+                    <ul class="space-y-3">
+                        <li><a href="help.html" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact Support</a></li>
+                        <li><a href="community.html" class="hover:text-white transition-colors">Community</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-10 text-sm text-gray-400">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        © 2023 PayFlow. All rights reserved.
+                    </div>
+                    <div class="flex space-x-8">
+                        <a href="privacy.html" class="hover:text-white transition-colors">Privacy</a>
+                        <a href="terms.html" class="hover:text-white transition-colors">Terms</a>
+                        <a href="cookies.html" class="hover:text-white transition-colors">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple scroll animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const slideInElements = document.querySelectorAll('.slide-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            slideInElements.forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Mobile menu functionality
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            
+            function openMobileMenu() {
+                mobileMenu.classList.add('active');
+                mobileMenuOverlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeMobileMenuFunc() {
+                mobileMenu.classList.remove('active');
+                mobileMenuOverlay.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+            
+            mobileMenuButton.addEventListener('click', openMobileMenu);
+            closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+            mobileMenuOverlay.addEventListener('click', closeMobileMenuFunc);
+            
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', closeMobileMenuFunc);
+            });
+            
+            // Create floating particles
+            const particlesContainer = document.getElementById('particles-container');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('supine-particle');
+                
+                // Random size between 3 and 8px
+                const size = Math.random() * 5 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                
+                // Random animation duration between 10 and 30 seconds
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>

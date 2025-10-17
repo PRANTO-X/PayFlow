@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayFlow | Modern Payment Infrastructure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --secondary: #0F172A;
+            --accent: #06B6D4;
+            --success: #10B981;
+            --light: #F8FAFC;
+            --gray: #64748B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #fff;
+            color: var(--secondary);
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -20px); }
+            100% { transform: translate(0, 0px); }
+        }
+        
+        .pulse {
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+        
+        .slide-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        
+        .slide-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, #fff 0%, #f8faff 100%);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+            z-index: 50;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .mobile-menu-header {
+            flex-shrink: 0;
+            padding: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .mobile-menu-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .nav-link {
+            position: relative;
+            padding: 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        /* Custom breakpoint for 1100px */
+        @media (max-width: 1100px) {
+            .desktop-nav {
+                display: none !important;
+            }
+            
+            .mobile-nav-button {
+                display: flex !important;
+            }
+        }
+        
+        @media (min-width: 1101px) {
+            .mobile-nav-button {
+                display: none !important;
+            }
+        }
+        
+        /* Modern scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+        }
+        
+        /* Glow effects */
+        .glow {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        
+        /* Animated background */
+        .animated-bg {
+            background: linear-gradient(-45deg, #f8faff, #f0f4ff, #e6f0ff, #f0f4ff);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Modern button styles */
+        .btn-modern {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        .btn-modern:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-modern:hover:before {
+            left: 100%;
+        }
+        
+        /* Modern section dividers */
+        .divider {
+            height: 3px;
+            width: 80px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            margin: 20px auto;
+            border-radius: 3px;
+        }
+        
+        /* NEW: Supine Animation Styles */
+        .supine-float {
+            animation: supine-float 8s ease-in-out infinite;
+        }
+        
+        @keyframes supine-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(2deg); }
+            66% { transform: translateY(5px) rotate(-1deg); }
+        }
+        
+        .supine-glow {
+            animation: supine-glow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes supine-glow {
+            0% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+            100% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+        }
+        
+        .supine-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--accent), var(--primary));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: supine-text 5s ease infinite;
+        }
+        
+        @keyframes supine-text {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .supine-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .supine-shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.8) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: supine-shimmer 3s infinite;
+        }
+        
+        @keyframes supine-shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+        
+        .supine-bg {
+            background: linear-gradient(-45deg, #f8faff, #f0f4ff, #e6f0ff, #f0f4ff, #e6f7ff);
+            background-size: 400% 400%;
+            animation: supine-bg 15s ease infinite;
+        }
+        
+        @keyframes supine-bg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .supine-appear {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: supine-appear 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+        }
+        
+        @keyframes supine-appear {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .supine-stagger > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: supine-stagger 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+        }
+        
+        @keyframes supine-stagger {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .supine-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+        .supine-stagger > *:nth-child(2) { animation-delay: 0.2s; }
+        .supine-stagger > *:nth-child(3) { animation-delay: 0.3s; }
+        .supine-stagger > *:nth-child(4) { animation-delay: 0.4s; }
+        .supine-stagger > *:nth-child(5) { animation-delay: 0.5s; }
+        .supine-stagger > *:nth-child(6) { animation-delay: 0.6s; }
+        
+        .supine-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .supine-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .supine-typing {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+        
+        .supine-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .supine-particle {
+            position: absolute;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: supine-particle-float 20s infinite linear;
+        }
+        
+        @keyframes supine-particle-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="supine-bg">
+    <!-- Particles Background -->
+    <div class="supine-particles" id="particles-container"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="text-2xl font-black text-gray-900 flex items-center supine-appear" style="animation-delay: 0.1s">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 mr-3 flex items-center justify-center text-white supine-float">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span class="gradient-text">PayFlow</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="desktop-nav flex items-center space-x-10 supine-stagger">
+                    <a href="products.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Products</a>
+                    <a href="solutions.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Solutions</a>
+                    <a href="developers.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Developers</a>
+                    <a href="pricing.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Pricing</a>
+                    <a href="resources.html" class="nav-link text-gray-700 hover:text-gray-900 font-semibold transition-colors">Resources</a>
+                </div>
+
+                <!-- Desktop CTA Buttons -->
+                <div class="desktop-nav flex items-center space-x-6 supine-stagger">
+                    <a href="support.html" class="text-gray-700 hover:text-gray-900 font-semibold">Support</a>
+                    <a href="login.html" class="text-gray-700 hover:text-gray-900 font-semibold">Sign in</a>
+                    <a href="signup.html" class="btn-modern text-white px-6 py-3 rounded-xl font-semibold supine-glow">
+                        Get started
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="mobile-nav-button flex items-center">
+                    <a href="login.html" class="text-gray-700 hover:text-gray-900 mr-6 font-semibold">Sign in</a>
+                    <button type="button" id="mobile-menu-button" class="text-gray-700 hover:text-gray-900">
+                        <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu">
+            <div class="mobile-menu-header">
+                <div class="flex items-center justify-between">
+                    <a href="index.html" class="text-xl font-black text-gray-900 flex items-center">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-cyan-500 mr-3 flex items-center justify-center text-white supine-float">
+                            <i class="fas fa-bolt text-sm"></i>
+                        </div>
+                        <span class="gradient-text">PayFlow</span>
+                    </a>
+                    <button id="close-mobile-menu" class="text-gray-500 hover:text-gray-700">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mobile-menu-content space-y-2 supine-stagger">
+                <a href="products.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Products</a>
+                <a href="solutions.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Solutions</a>
+                <a href="developers.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Developers</a>
+                <a href="pricing.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Pricing</a>
+                <a href="resources.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Resources</a>
+                <a href="support.html" class="block text-lg font-semibold text-gray-900 py-3 hover:bg-gray-50 rounded-lg px-4 transition-colors">Support</a>
+                
+                <div class="pt-6 border-t border-gray-100 mt-6">
+                    <a href="signup.html" class="block w-full btn-modern text-white text-center py-4 rounded-xl font-semibold supine-glow">
+                        Get started
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-24 overflow-hidden relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-cyan-50 z-0"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="slide-in">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-white shadow-sm mb-8 supine-appear" style="animation-delay: 0.2s">
+                        <span class="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 mr-2 supine-glow"></span>
+                        <span class="text-sm font-semibold text-gray-700">The future of payments is here</span>
+                    </div>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight supine-appear" style="animation-delay: 0.3s">
+                        Payments for the <span class="supine-text text-glow">digital age</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-10 max-w-lg leading-relaxed supine-appear" style="animation-delay: 0.4s">
+                        Build, launch, and scale your business with the most powerful payment infrastructure on the planet.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-5 mb-12 supine-appear" style="animation-delay: 0.5s">
+                        <a href="signup.html" class="btn-modern text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center justify-center supine-shimmer supine-glow">
+                            Start building <i class="fas fa-arrow-right ml-3"></i>
+                        </a>
+                        <a href="contact.html" class="glass-card border border-gray-200 text-gray-700 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg transition-all flex items-center justify-center supine-hover">
+                            Contact sales
+                        </a>
+                    </div>
+                    <div class="flex items-center supine-appear" style="animation-delay: 0.6s">
+                        <div class="flex -space-x-3 mr-5">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 border-2 border-white shadow supine-float" style="animation-delay: 0.1s"></div>
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-green-400 to-teal-500 border-2 border-white shadow supine-float" style="animation-delay: 0.2s"></div>
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 border-2 border-white shadow supine-float" style="animation-delay: 0.3s"></div>
+                        </div>
+                        <p class="text-gray-600"><span class="font-bold">20,000+</span> businesses trust PayFlow</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="supine-float supine-glow">
+                        <div class="glass-card rounded-3xl shadow-2xl p-8 max-w-md mx-auto border border-white/50 supine-shimmer">
+                            <div class="flex justify-between items-center mb-8">
+                                <div class="flex items-center">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 mr-4 flex items-center justify-center text-white supine-float">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <span class="font-black text-xl">PayFlow</span>
+                                </div>
+                                <div class="text-xs bg-green-100 text-green-800 px-3 py-1.5 rounded-full font-semibold supine-glow">Active</div>
+                            </div>
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-5 mb-6 supine-hover">
+                                <div class="flex justify-between text-sm text-gray-600 mb-3 font-medium">
+                                    <span>Transaction</span>
+                                    <span>#PF-4873</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-black text-2xl">$1,250.00</div>
+                                        <div class="text-xs text-gray-500 mt-1">Acme Inc • Sep 12, 2023</div>
+                                    </div>
+                                    <div class="w-12 h-7 bg-gradient-to-r from-green-400 to-cyan-500 rounded-full flex items-center justify-end pr-1 supine-glow">
+                                        <div class="w-5 h-5 bg-white rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 mb-6">
+                                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 text-center supine-hover">
+                                    <div class="text-xs text-gray-500 font-medium">Today</div>
+                                    <div class="font-black text-lg">$3.2K</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 text-center supine-hover">
+                                    <div class="text-xs text-gray-500 font-medium">This Week</div>
+                                    <div class="font-black text-lg">$18.7K</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 text-center supine-hover">
+                                    <div class="text-xs text-gray-500 font-medium">This Month</div>
+                                    <div class="font-black text-lg">$42.5K</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-sm font-medium">
+                                <button class="text-gray-500 hover:text-gray-700 flex items-center"><i class="fas fa-chart-bar mr-2"></i> Analytics</button>
+                                <button class="text-gray-500 hover:text-gray-700 flex items-center"><i class="fas fa-cog mr-2"></i> Settings</button>
+                                <button class="text-gray-500 hover:text-gray-700 flex items-center"><i class="fas fa-download mr-2"></i> Export</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-r from-yellow-300 to-pink-400 rounded-full opacity-20 supine-float" style="animation-delay: 1s;"></div>
+                    <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-r from-green-300 to-blue-400 rounded-full opacity-20 supine-float" style="animation-delay: 2s;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <section class="py-16 bg-white border-y border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 mb-12 text-sm font-semibold tracking-wider supine-appear">TRUSTED BY INDUSTRY LEADERS</p>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-10 items-center opacity-80 supine-stagger">
+                <div class="text-center text-gray-800 font-black text-2xl tracking-tight supine-hover">amazon</div>
+                <div class="text-center text-gray-800 font-black text-2xl tracking-tight supine-hover">google</div>
+                <div class="text-center text-gray-800 font-black text-2xl tracking-tight supine-hover">microsoft</div>
+                <div class="text-center text-gray-800 font-black text-2xl tracking-tight supine-hover">spotify</div>
+                <div class="text-center text-gray-800 font-black text-2xl tracking-tight supine-hover">uber</div>
+                <div class="text-center text-gray-800 font-black text-2xl tracking-tight supine-hover">shopify</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-gradient-to-b from-white to-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 slide-in">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-5 supine-appear">
+                    Everything you need to run your business
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                    Powerful tools and seamless integrations to accept payments, manage subscriptions, prevent fraud, and grow your revenue.
+                </p>
+                <div class="divider supine-appear" style="animation-delay: 0.2s"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-10 rounded-3xl card-hover border border-white/50 supine-appear" style="animation-delay: 0.3s">
+                    <div class="feature-icon supine-float">
+                        <i class="fas fa-credit-card text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Payment Processing</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Accept cards, digital wallets, and bank transfers with industry-leading success rates and optimized checkout flows.</p>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-10 rounded-3xl card-hover border border-white/50 supine-appear" style="animation-delay: 0.4s">
+                    <div class="feature-icon supine-float" style="animation-delay: 0.2s">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Fraud Prevention</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Advanced machine learning and customizable rules to block fraudulent transactions while approving more legitimate ones.</p>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-10 rounded-3xl card-hover border border-white/50 supine-appear" style="animation-delay: 0.5s">
+                    <div class="feature-icon supine-float" style="animation-delay: 0.4s">
+                        <i class="fas fa-globe text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-4">Global Payments</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">Accept payments in 135+ currencies and reach customers anywhere with local payment methods and optimized routing.</p>
+                    <a href="#" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold flex items-center group">
+                        Learn more <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-24 gradient-bg text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center supine-stagger">
+                <div class="slide-in">
+                    <div class="text-5xl md:text-6xl font-black mb-3 supine-text">99.9%</div>
+                    <div class="text-purple-100 font-semibold">Uptime</div>
+                </div>
+                <div class="slide-in" style="transition-delay: 0.1s">
+                    <div class="text-5xl md:text-6xl font-black mb-3 supine-text">$250B+</div>
+                    <div class="text-purple-100 font-semibold">Processed annually</div>
+                </div>
+                <div class="slide-in" style="transition-delay: 0.2s">
+                    <div class="text-5xl md:text-6xl font-black mb-3 supine-text">135+</div>
+                    <div class="text-purple-100 font-semibold">Currencies</div>
+                </div>
+                <div class="slide-in" style="transition-delay: 0.3s">
+                    <div class="text-5xl md:text-6xl font-black mb-3 supine-text">20K+</div>
+                    <div class="text-purple-100 font-semibold">Businesses</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 slide-in">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-5 supine-appear">
+                    Loved by Businesses Worldwide
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                    See what our customers say about their experience with PayFlow
+                </p>
+                <div class="divider supine-appear" style="animation-delay: 0.2s"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card p-10 rounded-3xl border border-gray-100 slide-in supine-hover">
+                    <div class="flex items-center mb-8">
+                        <div class="w-14 h-14 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl mr-5 supine-float"></div>
+                        <div>
+                            <h4 class="font-black text-gray-900 text-lg">Sarah Johnson</h4>
+                            <p class="text-gray-500 text-sm font-medium">CEO, TechStart Inc</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">"PayFlow reduced our payment processing costs by 30% and improved our checkout conversion rate. The API integration was seamless."</p>
+                    <div class="flex text-yellow-400 text-lg">
+                        <i class="fas fa-star supine-glow"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.1s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.2s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.3s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.4s"></i>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card p-10 rounded-3xl border border-gray-100 slide-in supine-hover" style="transition-delay: 0.1s">
+                    <div class="flex items-center mb-8">
+                        <div class="w-14 h-14 bg-gradient-to-r from-green-400 to-teal-500 rounded-xl mr-5 supine-float" style="animation-delay: 0.2s"></div>
+                        <div>
+                            <h4 class="font-black text-gray-900 text-lg">Michael Chen</h4>
+                            <p class="text-gray-500 text-sm font-medium">CTO, GlobalRetail</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">"The fraud prevention tools have saved us thousands in chargebacks. PayFlow's support team is incredibly responsive and helpful."</p>
+                    <div class="flex text-yellow-400 text-lg">
+                        <i class="fas fa-star supine-glow"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.1s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.2s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.3s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.4s"></i>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card p-10 rounded-3xl border border-gray-100 slide-in supine-hover" style="transition-delay: 0.2s">
+                    <div class="flex items-center mb-8">
+                        <div class="w-14 h-14 bg-gradient-to-r from-purple-400 to-pink-500 rounded-xl mr-5 supine-float" style="animation-delay: 0.4s"></div>
+                        <div>
+                            <h4 class="font-black text-gray-900 text-lg">Elena Rodriguez</h4>
+                            <p class="text-gray-500 text-sm font-medium">Founder, CreativeMarket</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">"We expanded to 5 new countries with PayFlow's global payment capabilities. The multi-currency support made international growth simple."</p>
+                    <div class="flex text-yellow-400 text-lg">
+                        <i class="fas fa-star supine-glow"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.1s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.2s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.3s"></i>
+                        <i class="fas fa-star supine-glow" style="animation-delay: 0.4s"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section class="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="slide-in">
+                    <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 supine-appear">
+                        Seamless integration with your stack
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                        Connect PayFlow with your favorite tools and platforms. Our extensive documentation and SDKs make integration simple and fast.
+                    </p>
+                    <div class="flex flex-wrap gap-4 mb-10 supine-stagger">
+                        <span class="glass-card px-5 py-3 rounded-xl border border-white/50 font-semibold supine-hover">React</span>
+                        <span class="glass-card px-5 py-3 rounded-xl border border-white/50 font-semibold supine-hover">Node.js</span>
+                        <span class="glass-card px-5 py-3 rounded-xl border border-white/50 font-semibold supine-hover">Python</span>
+                        <span class="glass-card px-5 py-3 rounded-xl border border-white/50 font-semibold supine-hover">iOS</span>
+                        <span class="glass-card px-5 py-3 rounded-xl border border-white/50 font-semibold supine-hover">Android</span>
+                        <span class="glass-card px-5 py-3 rounded-xl border border-white/50 font-semibold supine-hover">WordPress</span>
+                    </div>
+                    <a href="developers.html" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 font-bold text-lg flex items-center group supine-appear" style="animation-delay: 0.6s">
+                        View all integrations <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i>
+                    </a>
+                </div>
+                <div class="relative">
+                    <div class="glass-card rounded-3xl shadow-xl p-8 border border-white/50 supine-float">
+                        <div class="flex items-center mb-8">
+                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2 supine-glow"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2 supine-glow" style="animation-delay: 0.1s"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2 supine-glow" style="animation-delay: 0.2s"></div>
+                            <div class="text-sm text-gray-500 ml-2 font-medium">integrations.js</div>
+                        </div>
+                        <pre class="text-sm text-gray-800 overflow-x-auto font-mono">
+<span class="text-purple-600">import</span> { PayFlow } <span class="text-purple-600">from</span> 'payflow-sdk';
+
+<span class="text-purple-600">const</span> payflow = <span class="text-purple-600">new</span> PayFlow('pk_test_...');
+
+<span class="text-green-600">// Create a payment intent</span>
+<span class="text-purple-600">const</span> paymentIntent = <span class="text-purple-600">await</span> payflow.paymentIntents.create({
+  amount: 2000,
+  currency: 'usd',
+  payment_method_types: ['card'],
+});
+
+<span class="text-green-600">// Confirm payment</span>
+<span class="text-purple-600">const</span> result = <span class="text-purple-600">await</span> payflow.confirmPayment(
+  paymentIntent.client_secret
+);</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 slide-in">
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-5 supine-appear">
+                    Frequently Asked Questions
+                </h2>
+                <p class="text-xl text-gray-600 supine-appear" style="animation-delay: 0.1s">
+                    Everything you need to know about PayFlow
+                </p>
+                <div class="divider supine-appear" style="animation-delay: 0.2s"></div>
+            </div>
+            
+            <div class="space-y-6 supine-stagger">
+                <div class="glass-card p-8 rounded-2xl border border-white/50 slide-in supine-hover">
+                    <h3 class="text-2xl font-black text-gray-900 mb-3">How quickly can I get started with PayFlow?</h3>
+                    <p class="text-gray-600 leading-relaxed">You can create an account and start testing in under 5 minutes. Our onboarding process is designed to get you up and running as quickly as possible.</p>
+                </div>
+                
+                <div class="glass-card p-8 rounded-2xl border border-white/50 slide-in supine-hover" style="transition-delay: 0.1s">
+                    <h3 class="text-2xl font-black text-gray-900 mb-3">What payment methods does PayFlow support?</h3>
+                    <p class="text-gray-600 leading-relaxed">We support all major credit and debit cards, digital wallets like Apple Pay and Google Pay, bank transfers, and local payment methods in over 40 countries.</p>
+                </div>
+                
+                <div class="glass-card p-8 rounded-2xl border border-white/50 slide-in supine-hover" style="transition-delay: 0.2s">
+                    <h3 class="text-2xl font-black text-gray-900 mb-3">Is PayFlow secure and PCI compliant?</h3>
+                    <p class="text-gray-600 leading-relaxed">Yes, PayFlow is Level 1 PCI DSS compliant, the highest level of certification in the payments industry. We use bank-grade security and encryption.</p>
+                </div>
+                
+                <div class="glass-card p-8 rounded-2xl border border-white/50 slide-in supine-hover" style="transition-delay: 0.3s">
+                    <h3 class="text-2xl font-black text-gray-900 mb-3">How does pricing work?</h3>
+                    <p class="text-gray-600 leading-relaxed">We charge a simple percentage fee per transaction with no monthly fees or hidden costs. Volume discounts are available for businesses processing over $1M annually.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 gradient-bg text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-black mb-6 supine-appear">Ready to get started?</h2>
+            <p class="text-xl text-purple-100 mb-10 max-w-2xl mx-auto leading-relaxed supine-appear" style="animation-delay: 0.1s">
+                Join thousands of businesses using PayFlow to power their payments and grow revenue.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-5 supine-appear" style="animation-delay: 0.2s">
+                <a href="signup.html" class="bg-white text-gray-900 px-10 py-5 rounded-xl font-black text-lg hover:shadow-2xl transition-all pulse flex items-center justify-center supine-shimmer">
+                    Create your account <i class="fas fa-arrow-right ml-3"></i>
+                </a>
+                <a href="contact.html" class="glass-card border border-white/30 text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-white/10 transition-colors flex items-center justify-center supine-hover">
+                    Contact sales
+                </a>
+            </div>
+            <p class="mt-10 text-purple-200 font-medium supine-appear" style="animation-delay: 0.3s">No setup fees, no monthly costs • Get started in minutes</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-10 supine-stagger">
+                <div class="col-span-2">
+                    <h3 class="text-white text-xl font-black mb-6 flex items-center">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-cyan-500 mr-3 flex items-center justify-center text-white supine-float">
+                            <i class="fas fa-bolt text-sm"></i>
+                        </div>
+                        PayFlow
+                    </h3>
+                    <p class="text-gray-400 mb-6 max-w-xs leading-relaxed">Modern payment processing for businesses of all sizes.</p>
+                    <div class="flex space-x-5">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl supine-hover"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl supine-hover"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl supine-hover"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-5 text-lg">Products</h4>
+                    <ul class="space-y-3">
+                        <li><a href="payments.html" class="hover:text-white transition-colors">Payments</a></li>
+                        <li><a href="billing.html" class="hover:text-white transition-colors">Billing</a></li>
+                        <li><a href="connect.html" class="hover:text-white transition-colors">Connect</a></li>
+                        <li><a href="radar.html" class="hover:text-white transition-colors">Radar</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-5 text-lg">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="careers.html" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="blog.html" class="hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-5 text-lg">Developers</h4>
+                    <ul class="space-y-3">
+                        <li><a href="documentation.html" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="api.html" class="hover:text-white transition-colors">API Reference</a></li>
+                        <li><a href="guides.html" class="hover:text-white transition-colors">Guides</a></li>
+                        <li><a href="status.html" class="hover:text-white transition-colors">Status</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-5 text-lg">Support</h4>
+                    <ul class="space-y-3">
+                        <li><a href="help.html" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact Support</a></li>
+                        <li><a href="community.html" class="hover:text-white transition-colors">Community</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-10 text-sm text-gray-400">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        © 2023 PayFlow. All rights reserved.
+                    </div>
+                    <div class="flex space-x-8">
+                        <a href="privacy.html" class="hover:text-white transition-colors">Privacy</a>
+                        <a href="terms.html" class="hover:text-white transition-colors">Terms</a>
+                        <a href="cookies.html" class="hover:text-white transition-colors">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple scroll animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const slideInElements = document.querySelectorAll('.slide-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            slideInElements.forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Mobile menu functionality
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMobileMenu = document.getElementById('close-mobile-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            
+            function openMobileMenu() {
+                mobileMenu.classList.add('active');
+                mobileMenuOverlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeMobileMenuFunc() {
+                mobileMenu.classList.remove('active');
+                mobileMenuOverlay.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+            
+            mobileMenuButton.addEventListener('click', openMobileMenu);
+            closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+            mobileMenuOverlay.addEventListener('click', closeMobileMenuFunc);
+            
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', closeMobileMenuFunc);
+            });
+            
+            // Create floating particles
+            const particlesContainer = document.getElementById('particles-container');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('supine-particle');
+                
+                // Random size between 3 and 8px
+                const size = Math.random() * 5 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                
+                // Random animation duration between 10 and 30 seconds
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
