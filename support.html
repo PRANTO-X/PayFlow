@@ -457,6 +457,7 @@
             box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
         }
         
+        /* FIXED: Mobile-responsive search bar */
         .search-container {
             background: white;
             border-radius: 16px;
@@ -465,6 +466,7 @@
             display: flex;
             max-width: 600px;
             margin: 0 auto;
+            flex-direction: row;
         }
         
         .search-input {
@@ -473,7 +475,8 @@
             padding: 16px 20px;
             font-size: 16px;
             outline: none;
-            border-radius: 12px 0 0 12px;
+            border-radius: 12px;
+            width: 100%;
         }
         
         .search-button {
@@ -485,11 +488,30 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
         
         .search-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
+        
+        @media (max-width: 640px) {
+            .search-container {
+                flex-direction: column;
+                gap: 12px;
+                padding: 16px;
+            }
+            
+            .search-input {
+                border-radius: 12px;
+                padding: 16px;
+            }
+            
+            .search-button {
+                width: 100%;
+                border-radius: 12px;
+            }
         }
         
         .status-indicator {
@@ -677,7 +699,7 @@
                     Get answers to your questions, troubleshoot issues, or contact our support team.
                 </p>
                 
-                <!-- Search Bar -->
+                <!-- FIXED: Mobile-responsive Search Bar -->
                 <div class="max-w-2xl mx-auto mb-12 supine-appear" style="animation-delay: 0.5s">
                     <div class="search-container">
                         <input type="text" class="search-input" placeholder="Search for answers...">
